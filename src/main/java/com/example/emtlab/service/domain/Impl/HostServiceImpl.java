@@ -1,7 +1,10 @@
 package com.example.emtlab.service.domain.Impl;
 
+import com.example.emtlab.model.Guest;
 import com.example.emtlab.model.Host;
+import com.example.emtlab.repository.GuestRepository;
 import com.example.emtlab.repository.HostRepository;
+import com.example.emtlab.service.domain.GuestService;
 import com.example.emtlab.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +17,11 @@ public class HostServiceImpl implements HostService {
 
     private final HostRepository hostRepository;
 
-    public HostServiceImpl(HostRepository hostRepository) {
+    private final GuestRepository guestRepository;
+
+    public HostServiceImpl(HostRepository hostRepository, GuestRepository guestRepository) {
         this.hostRepository = hostRepository;
+        this.guestRepository = guestRepository;
     }
 
     @Override
@@ -53,5 +59,16 @@ public class HostServiceImpl implements HostService {
     @Override
     public void deleteById(Long id) {
       hostRepository.deleteById(id);
+    }
+
+    @Override
+    public Host addGuest(Long hostId, Long guestId) {
+      Host host =  hostRepository.findById(hostId).orElse(null);
+       Guest guest =  guestRepository.findById(guestId).orElse(null);
+       host.getGuests().add(guest);
+       guest.getHosts().add(host);
+        guestRepository.save(guest);
+        return hostRepository.save(host);
+
     }
 }

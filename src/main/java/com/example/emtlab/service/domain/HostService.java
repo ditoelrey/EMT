@@ -14,9 +14,11 @@ public interface HostService {
 
     Optional<Host> save(Host host);
 
-    Optional<Host> update(Long id, Host manufacturer);
+    Optional<Host> update(Long id, Host host);
 
     void deleteById(Long id);
+
+    Host addGuest (Long hostId, Long guestId);
 
 
 

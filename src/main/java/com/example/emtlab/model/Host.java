@@ -1,7 +1,12 @@
 package com.example.emtlab.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -15,6 +20,18 @@ public class Host {
     @ManyToOne
     private Country country;
 
+    @ManyToMany(mappedBy = "hosts")
+    @JsonBackReference
+    private List<Guest> guests = new ArrayList<>();
+
+    public List<Guest> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(List<Guest> guests) {
+        this.guests = guests;
+    }
+
     public Host() {
     }
 
@@ -22,6 +39,14 @@ public class Host {
         this.name = name;
         this.surname = surname;
         this.country = country;
+    }
+
+
+    public Host(String name, String surname, Country country, List<Guest> guests) {
+        this.name = name;
+        this.surname = surname;
+        this.country = country;
+        this.guests = guests;
     }
 
     public Long getId() {
