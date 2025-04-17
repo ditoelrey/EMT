@@ -1,9 +1,11 @@
 package com.example.emtlab.service.application.impl;
 
+import com.example.emtlab.dto.AccommodationPerCategoryDTO;
 import com.example.emtlab.dto.CreateAccommodationDto;
 import com.example.emtlab.dto.DisplayAccommodationDto;
 import com.example.emtlab.model.Host;
 import com.example.emtlab.model.enumerations.Category;
+import com.example.emtlab.model.projections.CategoryProjection;
 import com.example.emtlab.service.application.AccommodationApplicationService;
 import com.example.emtlab.service.domain.AccommodationService;
 import com.example.emtlab.service.domain.HostService;
@@ -59,5 +61,15 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     public void deleteById(Long id) {
         accommodationService.deleteById(id);
 
+    }
+
+    @Override
+    public List<AccommodationPerCategoryDTO> statistics() {
+        return this.accommodationService.statistics();
+    }
+
+    @Override
+    public void rentAccommodation(Long id) {
+        this.accommodationService.rentAccommodation(id);
     }
 }

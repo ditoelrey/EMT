@@ -1,13 +1,16 @@
 package com.example.emtlab.service.domain.Impl;
 
 
+import com.example.emtlab.dto.AccommodationPerCategoryDTO;
 import com.example.emtlab.model.Accommodation;
+import com.example.emtlab.model.projections.CategoryProjection;
 import com.example.emtlab.repository.AccommodationRepository;
 import com.example.emtlab.service.domain.AccommodationService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AccommodationServiceImpl implements AccommodationService {
@@ -60,5 +63,15 @@ public class AccommodationServiceImpl implements AccommodationService {
         accommodationRepository.deleteById(id);
     }
 
+    @Override
+    public List<AccommodationPerCategoryDTO> statistics() {
+        return this.accommodationRepository.countReservedByCategory().stream().map((obj)->new AccommodationPerCategoryDTO(String.valueOf(obj[0]),((Number) obj[1]).intValue())).collect(Collectors.toList());
+    }
 
+    @Override
+    public void rentAccommodation(Long id) {
+        Accommodation tmp=this.accommodationRepository.findById(id).get();
+        tmp.setRented(true);
+        this.accommodationRepository.save(tmp);
+    }
 }

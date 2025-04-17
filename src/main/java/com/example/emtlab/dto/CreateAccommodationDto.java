@@ -12,7 +12,8 @@ public record CreateAccommodationDto(
         Integer numRooms,
 
         Long hostId,
-        Category category
+        Category category,
+        boolean rented
 ) {
 
     public static CreateAccommodationDto from(Accommodation accommodation) {
@@ -20,7 +21,8 @@ public record CreateAccommodationDto(
                 accommodation.getName(),
                 accommodation.getNumRooms(),
                 accommodation.getHost().getId(),
-                accommodation.getCategory()
+                accommodation.getCategory(),
+                accommodation.isRented()
         );
     }
 
@@ -31,7 +33,7 @@ public record CreateAccommodationDto(
     }
 
     public Accommodation toAccomodation (Host host) {
-        return new Accommodation(name, host,numRooms,category);
+        return new Accommodation(name, host,numRooms,category,rented);
     }
 
 

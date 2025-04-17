@@ -19,14 +19,17 @@ public class Accommodation {
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    private boolean rented = false;
+
     public Accommodation() {
     }
 
-    public Accommodation(String name, Host host, Integer numRooms, Category category) {
+    public Accommodation(String name, Host host, Integer numRooms, Category category,boolean rented) {
         this.name = name;
         this.host = host;
         this.numRooms = numRooms;
         this.category = category;
+        this.rented = rented;
     }
 
     public Accommodation(String name, Integer numRooms, Category category) {
@@ -34,6 +37,8 @@ public class Accommodation {
         this.numRooms = numRooms;
         this.category = category;
     }
+
+
 
 
     public Long getId() {
@@ -74,5 +79,13 @@ public class Accommodation {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public boolean isRented() {
+        return rented;
+    }
+
+    public void setRented(boolean rented) {
+        this.rented = rented;
     }
 }

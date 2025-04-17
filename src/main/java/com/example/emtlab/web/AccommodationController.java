@@ -1,9 +1,11 @@
 package com.example.emtlab.web;
 
 
+import com.example.emtlab.dto.AccommodationPerCategoryDTO;
 import com.example.emtlab.dto.CreateAccommodationDto;
 import com.example.emtlab.dto.DisplayAccommodationDto;
 import com.example.emtlab.model.Accommodation;
+import com.example.emtlab.model.projections.CategoryProjection;
 import com.example.emtlab.service.application.AccommodationApplicationService;
 import com.example.emtlab.service.domain.AccommodationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +66,23 @@ public class AccommodationController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+
+    @Operation(summary = "Rent an accommodation", description = "Marks an accommodation as reserved.")
+    @PostMapping("/rent/{id}")
+    public ResponseEntity<Void> rent(@PathVariable Long id) {
+        if (accommodationApplicationService.findById(id).isPresent()) {
+            accommodationApplicationService.rentAccommodation(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @Operation(summary = "Get accommodation statistics", description = "Reserved Accommodation Statistics per every category")
+    @GetMapping("/statistics")
+    public List<AccommodationPerCategoryDTO> statistics() {
+        return accommodationApplicationService.statistics();
     }
 
 
