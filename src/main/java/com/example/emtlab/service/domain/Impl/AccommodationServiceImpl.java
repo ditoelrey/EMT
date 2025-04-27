@@ -2,6 +2,7 @@ package com.example.emtlab.service.domain.Impl;
 
 
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
+import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.model.Accommodation;
 import com.example.emtlab.model.projections.CategoryProjection;
 import com.example.emtlab.repository.AccommodationRepository;
@@ -73,5 +74,21 @@ public class AccommodationServiceImpl implements AccommodationService {
         Accommodation tmp=this.accommodationRepository.findById(id).get();
         tmp.setRented(true);
         this.accommodationRepository.save(tmp);
+    }
+
+    @Override
+    public void refreshAccommodationsByHostMaterializedView() {
+        accommodationRepository.refreshAccommodationsByHostMaterializedView();
+    }
+
+    @Override
+    public List<AccommodationsByHostDTO> getAccommodationsCountByHost() {
+        return accommodationRepository.countAccommodationsByHost().stream()
+                .map(projection -> new AccommodationsByHostDTO(
+                        projection.getHostId(),
+                        projection.getHostName(),
+                        projection.getAccommodationCount()
+                ))
+                .collect(Collectors.toList());
     }
 }

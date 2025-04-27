@@ -1,6 +1,7 @@
 package com.example.emtlab.service.application;
 
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
+import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.dto.CreateAccommodationDto;
 import com.example.emtlab.dto.DisplayAccommodationDto;
 import com.example.emtlab.model.projections.CategoryProjection;
@@ -23,6 +24,10 @@ public interface AccommodationApplicationService {
     List<AccommodationPerCategoryDTO> statistics();
 
     void rentAccommodation(Long id);
+
+    void refreshAccommodationsByHostMaterializedView();
+
+    List<AccommodationsByHostDTO> getAccommodationsCountByHost();
 
 
 

@@ -1,11 +1,11 @@
 package com.example.emtlab.service.application.impl;
 
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
+import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.dto.CreateAccommodationDto;
 import com.example.emtlab.dto.DisplayAccommodationDto;
 import com.example.emtlab.model.Host;
-import com.example.emtlab.model.enumerations.Category;
-import com.example.emtlab.model.projections.CategoryProjection;
+import com.example.emtlab.repository.AccommodationRepository;
 import com.example.emtlab.service.application.AccommodationApplicationService;
 import com.example.emtlab.service.domain.AccommodationService;
 import com.example.emtlab.service.domain.HostService;
@@ -20,6 +20,7 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
 
     private final AccommodationService accommodationService;
     private final HostService hostService;
+
 
     public AccommodationApplicationServiceImpl(AccommodationService accommodationService, HostService hostService) {
         this.accommodationService = accommodationService;
@@ -72,4 +73,15 @@ public class AccommodationApplicationServiceImpl implements AccommodationApplica
     public void rentAccommodation(Long id) {
         this.accommodationService.rentAccommodation(id);
     }
+
+    @Override
+    public void refreshAccommodationsByHostMaterializedView() {
+        accommodationService.refreshAccommodationsByHostMaterializedView();
+    }
+
+    @Override
+    public List<AccommodationsByHostDTO> getAccommodationsCountByHost() {
+        return accommodationService.getAccommodationsCountByHost();
+    }
+
 }

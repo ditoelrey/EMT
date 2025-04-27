@@ -1,6 +1,7 @@
 package com.example.emtlab.web;
 
-import com.example.emtlab.dto.DisplayHostDto;
+import com.example.emtlab.dto.*;
+import com.example.emtlab.projections.HostNameSurnameProjection;
 import com.example.emtlab.service.application.HostApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -8,6 +9,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/hosts")
@@ -32,4 +35,24 @@ public class HostController {
     ) {
         return ResponseEntity.ok(hostApplicationService.addGuest(hostId, guestId));
     }
+    @GetMapping("/by-country")
+    public ResponseEntity<List<DisplayHostByCountryDTO>> getHostsByCountry() {
+        List<DisplayHostByCountryDTO> result = hostApplicationService.getHostsByCountry();
+        return ResponseEntity.ok(result);
+    }
+
+    @PostMapping("/add")
+    @Operation(summary = "Add new Host", description = "Creates a new host entry")
+    public ResponseEntity<DisplayHostDto> save(@RequestBody CreateHostDto host) {
+        return hostApplicationService.save(host)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.badRequest().build());
+    }
+
+    @GetMapping
+    @Operation(summary = "Get all hosts", description = "Fetches all hosts from the database")
+    public List<HostNameSurnameProjection> findAll() {
+        return hostApplicationService.listByNameAndSurname();
+    }
+
 }

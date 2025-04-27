@@ -1,15 +1,19 @@
 package com.example.emtlab.service.domain.Impl;
 
+import com.example.emtlab.dto.DisplayHostByCountryDTO;
+import com.example.emtlab.dto.DisplayHostDto;
 import com.example.emtlab.model.Guest;
 import com.example.emtlab.model.Host;
+import com.example.emtlab.projections.HostNameSurnameProjection;
 import com.example.emtlab.repository.GuestRepository;
 import com.example.emtlab.repository.HostRepository;
-import com.example.emtlab.service.domain.GuestService;
+import com.example.emtlab.repository.HostsByCountryRepositoryView;
 import com.example.emtlab.service.domain.HostService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -19,9 +23,12 @@ public class HostServiceImpl implements HostService {
 
     private final GuestRepository guestRepository;
 
-    public HostServiceImpl(HostRepository hostRepository, GuestRepository guestRepository) {
+    private final HostsByCountryRepositoryView hostsByCountryRepositoryView;
+
+    public HostServiceImpl(HostRepository hostRepository, GuestRepository guestRepository, HostsByCountryRepositoryView hostsByCountryRepositoryView) {
         this.hostRepository = hostRepository;
         this.guestRepository = guestRepository;
+        this.hostsByCountryRepositoryView = hostsByCountryRepositoryView;
     }
 
     @Override
@@ -70,5 +77,25 @@ public class HostServiceImpl implements HostService {
         guestRepository.save(guest);
         return hostRepository.save(host);
 
+    }
+
+@Override
+    public void refreshMaterializedView() {
+        hostsByCountryRepositoryView.refreshMaterializedView();
+    }
+
+    @Override
+    public List<DisplayHostByCountryDTO> getHostsByCountry() {
+        return hostsByCountryRepositoryView.findAllOrderByHostCountDesc().stream()
+                .map(view -> new DisplayHostByCountryDTO(
+                        view.getCountryName(),
+                        view.getNumHosts()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<HostNameSurnameProjection> listByNameAndSurname() {
+        return hostRepository.findAllBy();
     }
 }

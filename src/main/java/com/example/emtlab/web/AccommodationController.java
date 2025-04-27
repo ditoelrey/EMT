@@ -2,6 +2,7 @@ package com.example.emtlab.web;
 
 
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
+import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.dto.CreateAccommodationDto;
 import com.example.emtlab.dto.DisplayAccommodationDto;
 import com.example.emtlab.model.Accommodation;
@@ -83,6 +84,11 @@ public class AccommodationController {
     @GetMapping("/statistics")
     public List<AccommodationPerCategoryDTO> statistics() {
         return accommodationApplicationService.statistics();
+    }
+
+    @GetMapping("/by-host")
+    public List<AccommodationsByHostDTO> getAccommodationsCountByHost() {
+        return accommodationApplicationService.getAccommodationsCountByHost();
     }
 
 

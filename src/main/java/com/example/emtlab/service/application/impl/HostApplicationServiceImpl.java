@@ -2,10 +2,12 @@ package com.example.emtlab.service.application.impl;
 
 import com.example.emtlab.dto.CreateHostDto;
 import com.example.emtlab.dto.DisplayGuestDto;
+import com.example.emtlab.dto.DisplayHostByCountryDTO;
 import com.example.emtlab.dto.DisplayHostDto;
 import com.example.emtlab.model.Country;
 import com.example.emtlab.model.Guest;
 import com.example.emtlab.model.Host;
+import com.example.emtlab.projections.HostNameSurnameProjection;
 import com.example.emtlab.service.application.HostApplicationService;
 import com.example.emtlab.service.domain.CountryService;
 import com.example.emtlab.service.domain.GuestService;
@@ -76,5 +78,15 @@ public class HostApplicationServiceImpl implements HostApplicationService {
     public DisplayHostDto addGuest(Long hostId, Long guestId) {
         Host host = hostService.addGuest(hostId,guestId);
         return DisplayHostDto.from(host);
+    }
+
+    @Override
+    public List<DisplayHostByCountryDTO> getHostsByCountry() {
+        return hostService.getHostsByCountry();
+    }
+
+    @Override
+    public List<HostNameSurnameProjection> listByNameAndSurname() {
+        return hostService.listByNameAndSurname();
     }
 }
