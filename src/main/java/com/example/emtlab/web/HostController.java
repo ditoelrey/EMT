@@ -51,8 +51,27 @@ public class HostController {
 
     @GetMapping
     @Operation(summary = "Get all hosts", description = "Fetches all hosts from the database")
-    public List<HostNameSurnameProjection> findAll() {
-        return hostApplicationService.listByNameAndSurname();
+    public List<DisplayHostDto> findAll() {
+        return hostApplicationService.findAll();
     }
 
+
+    @DeleteMapping("/delete/{id}")
+    @Operation(summary = "Delete a host", description = "Deletes a host by ID")
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+        if (hostApplicationService.findById(id).isPresent()) {
+            hostApplicationService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/edit/{id}")
+    @Operation(summary = "Edit host", description = "Updates an existing host by ID")
+    public ResponseEntity<DisplayHostDto> update(@PathVariable Long id, @RequestBody CreateHostDto createHostDto) {
+        return hostApplicationService.update(id, createHostDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }

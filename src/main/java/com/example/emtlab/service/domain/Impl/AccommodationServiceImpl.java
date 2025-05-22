@@ -4,7 +4,7 @@ package com.example.emtlab.service.domain.Impl;
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
 import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.model.Accommodation;
-import com.example.emtlab.model.projections.CategoryProjection;
+import com.example.emtlab.projections.HostAccommodationCountProjection;
 import com.example.emtlab.repository.AccommodationRepository;
 import com.example.emtlab.service.domain.AccommodationService;
 import org.springframework.stereotype.Service;

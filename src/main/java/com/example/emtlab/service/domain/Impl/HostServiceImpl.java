@@ -53,7 +53,7 @@ public class HostServiceImpl implements HostService {
                 existingHost.setName(host.getName());
             }
             if (host.getSurname() != null) {
-                existingHost.setSurname(existingHost.getSurname());
+                existingHost.setSurname(host.getSurname());
             }
             if (host.getCountry() != null) {
                 existingHost.setCountry(host.getCountry());

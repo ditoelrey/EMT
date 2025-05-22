@@ -3,7 +3,7 @@ package com.example.emtlab.service.domain;
 import com.example.emtlab.dto.AccommodationPerCategoryDTO;
 import com.example.emtlab.dto.AccommodationsByHostDTO;
 import com.example.emtlab.model.Accommodation;
-import com.example.emtlab.model.projections.CategoryProjection;
+import com.example.emtlab.projections.HostAccommodationCountProjection;
 
 import java.util.List;
 import java.util.Optional;

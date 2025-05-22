@@ -3,6 +3,7 @@ package com.example.emtlab.web;
 
 import com.example.emtlab.dto.CreateUserDto;
 import com.example.emtlab.dto.DisplayUserDto;
+import com.example.emtlab.dto.LoginResponseDto;
 import com.example.emtlab.dto.LoginUserDto;
 import com.example.emtlab.model.exceptions.InvalidArgumentsException;
 import com.example.emtlab.model.exceptions.InvalidUserCredentialsException;
@@ -48,26 +49,19 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "User login", description = "Authenticates a user and starts a session")
-    @ApiResponses(
-            value = {@ApiResponse(
-                    responseCode = "200",
-                    description = "User authenticated successfully"
-            ), @ApiResponse(responseCode = "404", description = "Invalid username or password")}
-    )
-    @PostMapping("/login")
-    public ResponseEntity<DisplayUserDto> login(HttpServletRequest request) {
-        try {
-            DisplayUserDto displayUserDto = userApplicationService.login(
-                    new LoginUserDto(request.getParameter("username"), request.getParameter("password"))
-            ).orElseThrow(InvalidUserCredentialsException::new);
 
-            request.getSession().setAttribute("user", displayUserDto.toUser());
-            return ResponseEntity.ok(displayUserDto);
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginUserDto loginUserDto) {
+        try {
+            return userApplicationService.login(loginUserDto)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(InvalidUserCredentialsException::new);
         } catch (InvalidUserCredentialsException e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 
     @Operation(summary = "User logout", description = "Ends the user's session")
     @ApiResponse(responseCode = "200", description = "User logged out successfully")

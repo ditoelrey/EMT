@@ -11,6 +11,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@NamedEntityGraph(
+        name = "User.withoutReservations",
+        attributeNodes = {
+                @NamedAttributeNode("role")
+        }
+)
 @Data
 @Entity
 @Table(name = "users")
